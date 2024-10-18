@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 public class ExpenseStorage {
-    private ArrayList<Expense> expenses = new ArrayList<>();
+    private static ArrayList<Expense> expenses = new ArrayList<>();
 
     // Lägger till en utgift
     public void addExpense(Expense expense) {
@@ -38,8 +38,9 @@ public class ExpenseStorage {
         }
     }
 
+
     // Visa alla utgifter
-    public ArrayList<Expense> getExpenses() {
+    public static ArrayList<Expense> getExpenses() {
         return expenses;
     }
 }

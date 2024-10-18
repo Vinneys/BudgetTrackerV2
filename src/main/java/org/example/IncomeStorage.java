@@ -1,49 +1,74 @@
 package org.example;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.FileReader;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class IncomeStorage {
-    private ArrayList<Income> incomes = new ArrayList<>();
+    private HashMap<String, Income> incomeMap = new HashMap<>();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-
-
-    // Lägger till en inkomst
+    // Add a new income with a unique key
     public void addIncome(Income income) {
-        incomes.add(income);
-        saveToFile();
+        String uniqueId = generateTimeId(income.getDate());  // Generate a unique key
+        incomeMap.put(uniqueId, income);
+        System.out.println("Income added with ID: " + uniqueId);
     }
 
-    // Spara inkomster till JSON-fil
-    public void saveToFile() {
-        try (FileWriter writer = new FileWriter("incomes.json")) {
-            Gson gson = new Gson();
-            gson.toJson(incomes, writer);
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Update income amount for a specific income entry based on key
+    private String generateTimeId(LocalDateTime date) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+        return date.format(timeFormatter); // Use formatted time (HHmmss) as ID
+    }
+
+    // Update income amount for a specific income entry based on key
+    public void setIncome(String key, double amount) {
+        if (incomeMap.containsKey(key)) {
+            Income income = incomeMap.get(key);
+            income.setAmount(amount); // Assuming the Income class has a setAmount method
+            System.out.println("Income amount updated successfully for ID: " + key);
+        } else {
+            System.out.println("Invalid key. Unable to update income.");
         }
     }
 
-    // Läs in inkomster från JSON-fil
-    public void loadFromFile() {
-        try (FileReader reader = new FileReader("incomes.json")) {
-            Gson gson = new Gson();
-            Type incomeListType = new TypeToken<List<Income>>(){}.getType();
-            incomes = gson.fromJson(reader, incomeListType);
+    // Update date for a specific income entry based on key
+    public void setDate(String key, String date) {
+        try {
+            if (incomeMap.containsKey(key)) {
+                LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
+                Income income = incomeMap.get(key);
+                income.setDate(parsedDate); // Assuming the Income class has a setDate method that accepts LocalDateTime
+                System.out.println("Income date updated successfully for ID: " + key);
+            } else {
+                System.out.println("Invalid key. Unable to update date.");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Invalid date format. Please enter the date in yyyy/MM/dd HH:mm:ss format.");
         }
     }
 
-    // Visa alla inkomster
+    // Show all incomes
+    public void showAllIncomes() {
+        if (incomeMap.isEmpty()) {
+            System.out.println("No incomes recorded.");
+        } else {
+            for (Map.Entry<String, Income> entry : incomeMap.entrySet()) {
+                System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
+            }
+        }
+    }
+
+    // Get income by key
+    public Income getIncomeByID(String key) {
+        return incomeMap.get(key);
+    }
+
+    // Get all incomes as a list
     public ArrayList<Income> getIncomes() {
-        return incomes;
+        return new ArrayList<>(incomeMap.values());  // Convert HashMap values to an ArrayList
     }
-
-    // Uppdatera och ta bort funktioner kan implementeras här
 }

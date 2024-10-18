@@ -1,15 +1,20 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    protected double amount;
-    protected LocalDate date;
+    private double amount;
+    private LocalDateTime date;
 
-    public Transaction(double amount, LocalDate date) {
+
+    public Transaction(double amount, LocalDateTime date) {
         this.amount = amount;
         this.date = date;
     }
+
+
 
     public double getAmount() {
         return amount;
@@ -18,10 +23,10 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }
