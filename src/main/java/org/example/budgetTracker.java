@@ -32,9 +32,10 @@ public class budgetTracker {
             //System.out.println("Welcome " + user + " to your own Budget Tracker!");
             System.out.println("1. Add an expense");
             System.out.println("2. Add an income");
-            System.out.println("3. Show all incomes");
-            System.out.println("4. Show all expenses");
-            System.out.println("5. End");
+            System.out.println("3. Show incomes");
+            System.out.println("4. Show expenses");
+            System.out.println("5. Delete an income");
+            System.out.println("6. End");
 
             int choice = scan.nextInt();
             scan.nextLine();
@@ -53,6 +54,9 @@ public class budgetTracker {
                     showExpenses();
                 }
                 case 5 -> {
+                    deleteIncome();
+                }
+                case 6 -> {
                     done = true;  // This will properly exit the loop
                 }
                 default -> {
@@ -67,17 +71,31 @@ public class budgetTracker {
         System.out.println("Do you want to see all incomes? (y/n)");
         String anst = scan.nextLine();
         if (anst.equalsIgnoreCase("y")) {
-            for (Income income : incomeStorage.getIncomes()) {
-                System.out.println(income);
-            }
-        }
-        else if (anst.equalsIgnoreCase("n")) {
+            incomeStorage.showAllIncomes();
+        } else if (anst.equalsIgnoreCase("n")) {
             System.out.println("Type in your ID");
             String id = scan.nextLine();
-            incomeStorage.getIncomeByID(id);
-            System.out.println("We found your income! "+ incomeStorage.getIncomeByID(id));
+            Income income = incomeStorage.getIncomeByID(id);
+            if (income != null) {
+                System.out.println("We found your income! " + income);
+                System.out.println("Do you want to update your income? (y/n)");
+                String update = scan.nextLine();
+                if (update.equalsIgnoreCase("y")) {
+                    System.out.println("Type in your new amount");
+                    double newAmount = scan.nextDouble();
+                    scan.nextLine();  // Consume newline
+
+                    System.out.println("Type in your new date (dd-MM-yyyy HH:mm)");
+                    String newDate = scan.nextLine();
+
+                    incomeStorage.updateIncome(id, newAmount, newDate);
+                }
+            } else {
+                System.out.println("Income with ID " + id + " not found.");
+            }
         }
     }
+
 
 
     static void addExpense() {
@@ -111,14 +129,26 @@ public class budgetTracker {
             System.out.println("Enter the date of the transaction (format: dd-MM-yyyy HH:mm):");
             String dateInput = scan.nextLine();
 
+            System.out.println("Enter the category of the income (SALARY, BUSINESS, INVESTMENT):");
+            String categoryInput = scan.nextLine().toUpperCase();
+
+            // Attempt to parse the category; if invalid, assign OTHER
+            EIncomeCategory category;
+            try {
+                category = EIncomeCategory.valueOf(categoryInput);
+            } catch (IllegalArgumentException e) {
+                category = EIncomeCategory.OTHER; // Default to OTHER if the input is invalid
+                System.out.println("Invalid category entered. Defaulting to OTHER category.");
+            }
+
             // Parse the input date using the formatter
             LocalDateTime date = LocalDateTime.parse(dateInput, formatter);
 
-            // Convert the date back to a formatted string before storing or displaying
-            String formattedDate = date.format(formatter);
+            // Add the income
+            Income income = new Income(amount, dateInput, category);
+            incomeStorage.addIncome(income);
 
-            System.out.println("Income added successfully: Amount: " + amount + ", Date: " + formattedDate);
-            incomeStorage.addIncome(new Income(amount, formattedDate));  // Store the formatted date string
+            System.out.println("Income added successfully: Amount: " + amount + ", Date: " + date + ", Category: " + category);
 
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
@@ -126,6 +156,14 @@ public class budgetTracker {
             System.out.println("An error occurred while adding the income: " + e.getMessage());
         }
     }
+
+
+    static void deleteIncome() {
+        System.out.println("Enter the ID of the income you wish to delete:");
+        String id = scan.nextLine();
+        incomeStorage.deleteIncome(id);
+    }
+
 
 
     static void showExpenses() {

@@ -1,5 +1,5 @@
 package org.example;
 
 public enum EIncomeCategory {
-    SALARY, BUSINESS, INVESTMENT
+    SALARY, BUSINESS, INVESTMENT, OTHER
 }

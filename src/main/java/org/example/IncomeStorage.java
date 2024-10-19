@@ -1,15 +1,12 @@
 package org.example;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class IncomeStorage {
     private HashMap<String, Income> incomeMap = new HashMap<>();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     // Add a new income with a unique key
     public void addIncome(Income income) {
@@ -23,6 +20,36 @@ public class IncomeStorage {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
         return date.format(timeFormatter); // Use formatted time (HHmmss) as ID
     }
+    // Update an existing income entry based on the key
+    public void updateIncome(String key, double newAmount, String newDate) {
+        if (incomeMap.containsKey(key)) {
+            try {
+                // Parse the new date using the specified formatter
+                LocalDateTime parsedDate = LocalDateTime.parse(newDate, formatter);
+
+                // Get the income object and update its fields
+                Income income = incomeMap.get(key);
+                income.setAmount(newAmount);
+                income.setDate(parsedDate);
+
+                System.out.println("Income updated successfully for ID: " + key);
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
+            }
+        } else {
+            System.out.println("Invalid key. Unable to update income.");
+        }
+    }
+    public void deleteIncome(String key) {
+        if (incomeMap.containsKey(key)) {
+            incomeMap.remove(key);
+            System.out.println("Income with ID " + key + " has been successfully deleted.");
+        } else {
+            System.out.println("Invalid key. No income found with ID " + key + ".");
+        }
+    }
+
+
 
     // Update income amount for a specific income entry based on key
     public void setIncome(String key, double amount) {
@@ -54,7 +81,7 @@ public class IncomeStorage {
     // Show all incomes
     public void showAllIncomes() {
         if (incomeMap.isEmpty()) {
-            System.out.println("No incomes recorded.");
+            System.out.println("No incomes been found.");
         } else {
             for (Map.Entry<String, Income> entry : incomeMap.entrySet()) {
                 System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
@@ -67,8 +94,8 @@ public class IncomeStorage {
         return incomeMap.get(key);
     }
 
-    // Get all incomes as a list
+    /* Get all incomes as a list
     public ArrayList<Income> getIncomes() {
         return new ArrayList<>(incomeMap.values());  // Convert HashMap values to an ArrayList
-    }
+    }*/
 }

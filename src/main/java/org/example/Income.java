@@ -6,11 +6,12 @@ import java.time.format.DateTimeFormatter;
 public class Income {
     private double amount;
     private LocalDateTime date;
+    private EIncomeCategory category;
 
-    public Income(double amount, String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    public Income(double amount, String dateString, EIncomeCategory category) {
         this.amount = amount;
-        this.date = LocalDateTime.parse(dateString, formatter);
+        this.category = category;
+        this.date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
     public double getAmount() {
@@ -29,8 +30,18 @@ public class Income {
         this.date = date;
     }
 
+    public EIncomeCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(EIncomeCategory category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
-        return "Income: Amount = " + amount + ", Date = " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        return "Income: Amount = " + amount
+                + ", Date = " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
+                + ", Category = " + category;
     }
 }
