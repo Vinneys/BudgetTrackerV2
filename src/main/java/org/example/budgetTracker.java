@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class budgetTracker {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     static IncomeStorage incomeStorage = new IncomeStorage();
-    static ExpenseStorage expenseStorage = new ExpenseStorage(); // Add an expense storage
+    static ExpenseStorage expenseStorage = new ExpenseStorage();
 
 
 
@@ -57,13 +57,13 @@ public class budgetTracker {
                     deleteIncome();
                 }
                 case 6 -> {
-                    done = true;  // This will properly exit the loop
+                    done = true;
                 }
                 default -> {
                     System.out.println("Invalid option, please try again.");
                 }
             }
-        } while (!done);  // Continue looping until the user chooses to end
+        } while (!done);
 
     }
 
@@ -104,17 +104,18 @@ public class budgetTracker {
             double amount = scan.nextDouble();
             scan.nextLine();
 
-            System.out.println("Enter the date of the transaction (format: YYYY-MM-DD):");
+            System.out.println("Enter the date of the transaction (format: dd-MM-yyyy HH:mm):");
             String dateInput = scan.nextLine();
 
             LocalDateTime date = LocalDateTime.parse(dateInput, formatter);
-            String formattedDate = date.format(formatter);// Parse string to LocalDate
+            Expense expense = new Expense(amount,dateInput);
 
-            System.out.println("Expense added successfully: Amount: " + amount + ", Date: " + formattedDate);
+            expenseStorage.addExpense(expense);
+            System.out.println("Expense added successfully: Amount: " + amount + ", Date: " + dateInput);
 
 
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            System.out.println("Invalid date format. Please enter the date in (dd-MM-yyyy HH:mm) format.");
         } catch (Exception e) {
             System.out.println("An error occurred while adding the expense: " + e.getMessage());
         }
@@ -144,11 +145,10 @@ public class budgetTracker {
             // Parse the input date using the formatter
             LocalDateTime date = LocalDateTime.parse(dateInput, formatter);
 
-            // Add the income
             Income income = new Income(amount, dateInput, category);
             incomeStorage.addIncome(income);
 
-            System.out.println("Income added successfully: Amount: " + amount + ", Date: " + date + ", Category: " + category);
+            System.out.println("Income added successfully: Amount: " + amount + ", Date: " + dateInput + ", Category: " + category);
 
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
@@ -167,10 +167,12 @@ public class budgetTracker {
 
 
     static void showExpenses() {
-        ExpenseStorage expenseStorage = new ExpenseStorage();
-        for (Expense expense : ExpenseStorage.getExpenses()) {
-            System.out.println(expense);
+        System.out.println("Do you want to see all expenses? (y/n)");
+        String anst = scan.nextLine();
+        if (anst.equalsIgnoreCase("y")) {
+            expenseStorage.showAllExpenses();
         }
+
     }
 }
 //https://www.javatpoint.com/java-localdatetime

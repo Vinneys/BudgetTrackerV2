@@ -1,46 +1,98 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.FileReader;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ExpenseStorage {
-    private static ArrayList<Expense> expenses = new ArrayList<>();
+    private final HashMap<String, Expense> expenseMap = new HashMap<>();
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-    // Lägger till en utgift
+    // Add a new expense with a unique key
     public void addExpense(Expense expense) {
-        expenses.add(expense);
-        saveToFile();
+        String uniqueId = generateTimeId(expense.getDate());  // Generate a unique key
+        expenseMap.put(uniqueId, expense);
+        System.out.println("Expense added with ID: " + uniqueId);
     }
 
-    // Spara utgifter till JSON-fil
-    private void saveToFile() {
-        try (FileWriter writer = new FileWriter("expenses.json")) {
-            Gson gson = new Gson();
-            gson.toJson(expenses, writer);
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Generate a unique ID based on the time
+    private String generateTimeId(LocalDateTime date) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+        return date.format(timeFormatter); // Use formatted time (HHmmss) as ID
+    }
+
+    // Update an existing expense entry based on the key
+    public void updateExpense(String key, double newAmount, String newDate) {
+        if (expenseMap.containsKey(key)) {
+            try {
+                // Parse the new date using the specified formatter
+                LocalDateTime parsedDate = LocalDateTime.parse(newDate, formatter);
+
+                // Get the expense object and update its fields
+                Expense expense = expenseMap.get(key);
+                expense.setAmount(newAmount);
+                expense.setDate(parsedDate);
+
+                System.out.println("Expense updated successfully for ID: " + key);
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
+            }
+        } else {
+            System.out.println("Invalid key. Unable to update expense.");
         }
     }
 
-    // Läs in utgifter från JSON-fil
-    public void loadFromFile() {
-        try (FileReader reader = new FileReader("expenses.json")) {
-            Gson gson = new Gson();
-            Type expenseListType = new TypeToken<List<Expense>>() {
-            }.getType();
-            expenses = gson.fromJson(reader, expenseListType);
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Delete an existing expense entry based on the key
+    public void deleteExpense(String key) {
+        if (expenseMap.containsKey(key)) {
+            expenseMap.remove(key);
+            System.out.println("Expense with ID " + key + " has been successfully deleted.");
+        } else {
+            System.out.println("Invalid key. No expense found with ID " + key + ".");
         }
     }
 
+    // Update expense amount for a specific expense entry based on key
+    public void setExpenseAmount(String key, double amount) {
+        if (expenseMap.containsKey(key)) {
+            Expense expense = expenseMap.get(key);
+            expense.setAmount(amount); // Assuming the Expense class has a setAmount method
+            System.out.println("Expense amount updated successfully for ID: " + key);
+        } else {
+            System.out.println("Invalid key. Unable to update expense.");
+        }
+    }
 
-    // Visa alla utgifter
-    public static ArrayList<Expense> getExpenses() {
-        return expenses;
+    // Update date for a specific expense entry based on key
+    public void setExpenseDate(String key, String date) {
+        try {
+            if (expenseMap.containsKey(key)) {
+                LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
+                Expense expense = expenseMap.get(key);
+                expense.setDate(parsedDate); // Assuming the Expense class has a setDate method that accepts LocalDateTime
+                System.out.println("Expense date updated successfully for ID: " + key);
+            } else {
+                System.out.println("Invalid key. Unable to update date.");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
+        }
+    }
+
+    // Show all expenses
+    public void showAllExpenses() {
+        if (expenseMap.isEmpty()) {
+            System.out.println("No expenses found.");
+        } else {
+            for (Map.Entry<String, Expense> entry : expenseMap.entrySet()) {
+                System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
+            }
+        }
+    }
+
+    // Get expense by key
+    public Expense getExpenseByID(String key) {
+        return expenseMap.get(key);
     }
 }
