@@ -70,7 +70,7 @@ public class ExpenseStorage {
             if (expenseMap.containsKey(key)) {
                 LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
                 Expense expense = expenseMap.get(key);
-                expense.setDate(parsedDate); // Assuming the Expense class has a setDate method that accepts LocalDateTime
+                expense.setDate(parsedDate);
                 System.out.println("Expense date updated successfully for ID: " + key);
             } else {
                 System.out.println("Invalid key. Unable to update date.");
@@ -80,13 +80,12 @@ public class ExpenseStorage {
         }
     }
 
-    // Show all expenses
     public void showAllExpenses() {
         if (expenseMap.isEmpty()) {
             System.out.println("No expenses found.");
         } else {
             for (Map.Entry<String, Expense> entry : expenseMap.entrySet()) {
-                System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
+                System.out.println("ID: " + entry.getKey() + ", Expense Details: Amount: " + entry.getValue().getAmount() + ", Date: " + entry.getValue().getDate().format(formatter) + ", Category: " + entry.getValue().getCategory());
             }
         }
     }

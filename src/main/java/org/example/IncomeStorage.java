@@ -68,7 +68,7 @@ public class IncomeStorage {
             if (incomeMap.containsKey(key)) {
                 LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
                 Income income = incomeMap.get(key);
-                income.setDate(parsedDate); // Assuming the Income class has a setDate method that accepts LocalDateTime
+                income.setDate(parsedDate);
                 System.out.println("Income date updated successfully for ID: " + key);
             } else {
                 System.out.println("Invalid key. Unable to update date.");

@@ -3,14 +3,12 @@ package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Expense {
-    private double amount;
+public class Expense extends Transaction {
     private EExpenseCategory category;
-    private LocalDateTime date;
 
-    public Expense( double amount, String dateString) {
-        this.amount = amount;
-        this.date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+    public Expense(double amount, LocalDateTime date, EExpenseCategory category) {
+        super(amount, date);  // Call the superclass constructor to set amount and date
+        this.category = category;
     }
 
     public EExpenseCategory getCategory() {
@@ -21,19 +19,8 @@ public class Expense {
         this.category = category;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    @Override
+    public String toString() {
+        return "Expense: Amount = " + getAmount() + ", Category = " + category + ", Date = " + getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 }

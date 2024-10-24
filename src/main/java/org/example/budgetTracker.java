@@ -1,10 +1,8 @@
 package org.example;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Scanner;
 
 public class budgetTracker {
@@ -13,11 +11,10 @@ public class budgetTracker {
     static ExpenseStorage expenseStorage = new ExpenseStorage();
 
 
-
-
     static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         //incomeStorage.loadFromFile();
         /*
                 System.out.println("What is your first name?");
@@ -36,6 +33,9 @@ public class budgetTracker {
             System.out.println("4. Show expenses");
             System.out.println("5. Delete an income");
             System.out.println("6. End");
+            System.out.println("7. Delete expense");
+            System.out.println("8. Show all transactions");
+
 
             int choice = scan.nextInt();
             scan.nextLine();
@@ -58,6 +58,12 @@ public class budgetTracker {
                 }
                 case 6 -> {
                     done = true;
+                }
+                case 7 ->{
+                    deleteExpense();
+                }
+                case 8 -> {
+                    showAllTransactions();
                 }
                 default -> {
                     System.out.println("Invalid option, please try again.");
@@ -97,7 +103,6 @@ public class budgetTracker {
     }
 
 
-
     static void addExpense() {
         try {
             System.out.println("Type in the amount of the expense:");
@@ -107,19 +112,33 @@ public class budgetTracker {
             System.out.println("Enter the date of the transaction (format: dd-MM-yyyy HH:mm):");
             String dateInput = scan.nextLine();
 
+            System.out.println("Enter the category of the expense (FOOD, TRANSPORT, ENTERTAINMENT, HEALTH, OTHER):");
+            String categoryInput = scan.nextLine().toUpperCase();
+
+            // Attempt to parse the category; if invalid, assign OTHER
+            EExpenseCategory category;
+            try {
+                category = EExpenseCategory.valueOf(categoryInput);
+            } catch (IllegalArgumentException e) {
+                category = EExpenseCategory.OTHER; // Default to OTHER if the input is invalid
+                System.out.println("Invalid category entered. Defaulting to OTHER category.");
+            }
+
+            // Parse the input date using the formatter
             LocalDateTime date = LocalDateTime.parse(dateInput, formatter);
-            Expense expense = new Expense(amount,dateInput);
 
+            // Create the expense object
+            Expense expense = new Expense(amount, date, category);
             expenseStorage.addExpense(expense);
-            System.out.println("Expense added successfully: Amount: " + amount + ", Date: " + dateInput);
 
-
+            System.out.println("Expense added successfully: Amount: " + amount + ", Date: " + dateInput + ", Category: " + category);
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format. Please enter the date in (dd-MM-yyyy HH:mm) format.");
+            System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
         } catch (Exception e) {
             System.out.println("An error occurred while adding the expense: " + e.getMessage());
         }
     }
+
 
     static void addIncome() {
         try {
@@ -130,7 +149,7 @@ public class budgetTracker {
             System.out.println("Enter the date of the transaction (format: dd-MM-yyyy HH:mm):");
             String dateInput = scan.nextLine();
 
-            System.out.println("Enter the category of the income (SALARY, BUSINESS, INVESTMENT):");
+            System.out.println("Enter the category of the income (SALARY, BUSINESS, INVESTMENT, OTHER):");
             String categoryInput = scan.nextLine().toUpperCase();
 
             // Attempt to parse the category; if invalid, assign OTHER
@@ -145,7 +164,7 @@ public class budgetTracker {
             // Parse the input date using the formatter
             LocalDateTime date = LocalDateTime.parse(dateInput, formatter);
 
-            Income income = new Income(amount, dateInput, category);
+            Income income = new Income(amount, date, category);
             incomeStorage.addIncome(income);
 
             System.out.println("Income added successfully: Amount: " + amount + ", Date: " + dateInput + ", Category: " + category);
@@ -165,14 +184,48 @@ public class budgetTracker {
     }
 
 
-
-    static void showExpenses() {
+    public static void showExpenses() {
         System.out.println("Do you want to see all expenses? (y/n)");
         String anst = scan.nextLine();
         if (anst.equalsIgnoreCase("y")) {
             expenseStorage.showAllExpenses();
-        }
+        } else if (anst.equalsIgnoreCase("n")) {
+            System.out.println("Type in your ID");
+            String id = scan.nextLine();
+            Expense expense = expenseStorage.getExpenseByID(id);
+            if (expense != null) {
+                System.out.println("We found your expense! Amount: " + expense.getAmount() + ", Date: " + expense.getDate().format(formatter) + ", Category: " + expense.getCategory());
+                System.out.println("Do you want to update your expense? (y/n)");
+                String update = scan.nextLine();
+                if (update.equalsIgnoreCase("y")) {
+                    System.out.println("Type in your new amount");
+                    double newAmount = scan.nextDouble();
+                    scan.nextLine();
 
+                    System.out.println("Type in your new date (dd-MM-yyyy HH:mm)");
+                    String newDate = scan.nextLine();
+
+                    expenseStorage.updateExpense(id, newAmount, newDate);
+                }
+            } else {
+                System.out.println("Expense with ID " + id + " not found.");
+            }
+        }
     }
+    public static void deleteExpense() {
+        System.out.println("Enter the ID of the expense you wish to delete:");
+        String id = scan.nextLine();
+        expenseStorage.deleteExpense(id);
+    }
+    public static void showAllTransactions() {
+        System.out.println("Showing all transactions:");
+
+        System.out.println("\n--- Expenses ---");
+        expenseStorage.showAllExpenses();
+
+        System.out.println("\n--- Incomes ---");
+        incomeStorage.showAllIncomes();
+    }
+
 }
 //https://www.javatpoint.com/java-localdatetime
