@@ -9,11 +9,11 @@ public class IncomeStorage {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     // Add a new income with a unique key
-    public void addIncome(Income income) {
-        String uniqueId = generateTimeId(income.getDate());  // Generate a unique key
+  /*  public void addIncome(Income income) {
+        String uniqueId = generateTimeId(Income.getDate());  // Generate a unique key
         incomeMap.put(uniqueId, income);
         System.out.println("Income added with ID: " + uniqueId);
-    }
+    }*/
 
     // Update income amount for a specific income entry based on key
     private String generateTimeId(LocalDateTime date) {

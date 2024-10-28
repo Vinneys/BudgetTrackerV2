@@ -3,15 +3,15 @@ package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Income  {
+public class Income extends Transaction {
     private double amount;
     private LocalDateTime date;
     private EIncomeCategory category;
 
     public Income(double amount, String dateString, EIncomeCategory category) {
-        this.amount = amount;
-        this.category = category;
+        super(amount, dateString);
         this.date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        this.category = category;
     }
 
     public double getAmount() {
@@ -22,9 +22,6 @@ public class Income  {
         this.amount = amount;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
