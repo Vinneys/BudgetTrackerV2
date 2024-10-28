@@ -86,7 +86,7 @@ public class ExpenseStorage {
             System.out.println("No expenses found.");
         } else {
             for (Map.Entry<String, Expense> entry : expenseMap.entrySet()) {
-                System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
+                System.out.println("ID: " + entry.getKey() + ", Expense Details: Amount: " + entry.getValue().getAmount() + ", Date: " + entry.getValue().getDate().format(formatter) + ", Category: " + entry.getValue().getCategory());
             }
         }
     }

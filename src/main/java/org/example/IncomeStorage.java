@@ -77,8 +77,6 @@ public class IncomeStorage {
             System.out.println("Invalid date format. Please enter the date in yyyy/MM/dd HH:mm:ss format.");
         }
     }
-
-    // Show all incomes
     public void showAllIncomes() {
         if (incomeMap.isEmpty()) {
             System.out.println("No incomes been found.");
@@ -96,6 +94,6 @@ public class IncomeStorage {
 
     /* Get all incomes as a list
     public ArrayList<Income> getIncomes() {
-        return new ArrayList<>(incomeMap.values());  // Convert HashMap values to an ArrayList
+        return new ArrayList<>(incomeMap.values());
     }*/
 }

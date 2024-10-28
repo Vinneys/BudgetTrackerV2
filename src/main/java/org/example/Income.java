@@ -3,7 +3,7 @@ package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Income {
+public class Income  {
     private double amount;
     private LocalDateTime date;
     private EIncomeCategory category;

@@ -15,7 +15,7 @@ public class Transaction {
     }
 
 
-
+//hej
     public double getAmount() {
         return amount;
     }

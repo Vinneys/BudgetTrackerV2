@@ -1,5 +1,5 @@
 package org.example;
 
 public enum EExpenseCategory {
-    FOOD, TRANSPORT, ENTERTAINMENT, HEALTH
+    FOOD, TRANSPORT, ENTERTAINMENT, HEALTH, OTHER
 }
