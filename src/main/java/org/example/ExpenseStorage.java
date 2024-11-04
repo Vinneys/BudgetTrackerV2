@@ -71,7 +71,7 @@ public class ExpenseStorage {
         return date.format(timeFormatter); // Use formatted time (HHmmss) as ID
     }
 
-    // Update an existing expense entry based on the key
+    // Update an existing expense entry based on the key//update with json
     public void updateExpense(String key, double newAmount, String newDate, String newCategory) {
         if (expenseMap.containsKey(key)) {
             try {
