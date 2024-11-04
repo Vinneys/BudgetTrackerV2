@@ -167,7 +167,7 @@ public class budgetTracker {
             System.out.println("An error occurred while adding the income: " + e.getMessage());
         }
     }
-
+//wear
     static void deleteIncome() {
         System.out.println("Enter the ID of the income you wish to delete:");
         String id = scan.nextLine();
