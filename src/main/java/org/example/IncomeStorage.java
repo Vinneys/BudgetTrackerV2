@@ -37,7 +37,7 @@ public class IncomeStorage {
             // Save the updated map to the file
             saveIncomeFile(uniqueId, income);
 
-            System.out.println("Income added with ID: " + uniqueId);
+
         } catch (Exception e) {
             System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy HH:mm format.");
         }
@@ -65,7 +65,7 @@ public class IncomeStorage {
             incomeMap.put(uniqueID, income);
             gson.toJson(incomeMap, fw);
             fw.close();
-            System.out.println("Saved income ");
+
 
 
     }
@@ -152,8 +152,4 @@ public class IncomeStorage {
     }
 
 
-    /* Get all incomes as a list
-    public ArrayList<Income> getIncomes() {
-        return new ArrayList<>(incomeMap.values());
-    }*/
 }

@@ -26,7 +26,6 @@ public class Expense extends Transaction {
             case "OTHER":
                 ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.OTHER));
                 break;
-            // Add more cases as necessary for other expense categories
         }
     }
 
@@ -42,7 +41,6 @@ public class Expense extends Transaction {
     public String toString() {
         return "Expense{" +
                 "category='" + category + '\'' +
-                ", ecategory=" + ecategory +
                 ", amount=" + amount +
                 ", date='" + date + '\'' +
                 '}';
