@@ -1,26 +1,48 @@
 package org.example;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class Income extends Transaction {
-    private EIncomeCategory category;
 
-    public Income(double amount, LocalDateTime date, EIncomeCategory category) {
-        super(amount, date);  // Call the superclass constructor to set amount and date
-        this.category = category;
+public class Income extends Transaction{
+    private String category;
+    private EIncomeCategory ecategory;
+
+
+
+    public Income(double amount, String dateString, String category) {
+        super(amount, dateString);
+
+        switch (category){
+            case "SALARY":
+                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.SALARY));
+                break;
+            case "INVESTMENT":
+                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.INVESTMENT));
+                break;
+
+            case "BUSINESS":
+                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.BUSINESS));
+            default:
+                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.OTHER));
+                break;
+        }
+
     }
 
     public EIncomeCategory getCategory() {
-        return category;
+        return ecategory;
     }
 
     public void setCategory(EIncomeCategory category) {
-        this.category = category;
+        this.ecategory = category;
     }
 
     @Override
     public String toString() {
-        return "Income: Amount = " + getAmount() + ", Category = " + category + ", Date = " + getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        return "Income{" +
+                "category='" + category + '\'' +
+                ", amount=" + amount +
+                ", date='" + date.formatted("dd-MM-yyyy HH:mm") + '\'' +
+                '}';
     }
 }

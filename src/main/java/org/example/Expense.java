@@ -4,23 +4,47 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Expense extends Transaction {
-    private EExpenseCategory category;
+    private String category;
+    private EExpenseCategory ecategory;
 
-    public Expense(double amount, LocalDateTime date, EExpenseCategory category) {
-        super(amount, date);  // Call the superclass constructor to set amount and date
-        this.category = category;
+
+
+    // Constructor to initialize an Expense object
+    public Expense(double amount, String dateString, String category) {
+        super(amount, dateString);
+
+        switch (category) {
+            case "FOOD":
+                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.FOOD));
+                break;
+            case "ENTERTAINMENT":
+                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.ENTERTAINMENT));
+                break;
+            case "TRANSPORT":
+                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.TRANSPORT));
+                break;
+            case "OTHER":
+                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.OTHER));
+                break;
+            // Add more cases as necessary for other expense categories
+        }
     }
 
     public EExpenseCategory getCategory() {
-        return category;
+        return ecategory;
     }
 
     public void setCategory(EExpenseCategory category) {
-        this.category = category;
+        this.ecategory = category;
     }
 
     @Override
     public String toString() {
-        return "Expense: Amount = " + getAmount() + ", Category = " + category + ", Date = " + getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        return "Expense{" +
+                "category='" + category + '\'' +
+                ", ecategory=" + ecategory +
+                ", amount=" + amount +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
