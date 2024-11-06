@@ -9,7 +9,6 @@ public class Expense extends Transaction {
 
 
 
-    // Constructor to initialize an Expense object
     public Expense(double amount, String dateString, String category) {
         super(amount, dateString);
 

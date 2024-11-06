@@ -1,18 +1,8 @@
 {
-  "120100": {
-    "category": "FOOD",
-    "ecategory": "FOOD",
-    "amount": 2000.0,
-    "date": "10-03-2024 12:01"
-  },
   "125500": {
-    "amount": 1.0,
-    "date": "10-10-2024 12:55"
-  },
-  "122000": {
     "category": "FOOD",
-    "ecategory": "FOOD",
-    "amount": 1.0,
-    "date": "10-10-2024 12:20"
+    "ecategory": "ENTERTAINMENT",
+    "amount": 10.0,
+    "date": "2024-02-10T12:20"
   }
 }

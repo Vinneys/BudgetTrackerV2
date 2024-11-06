@@ -77,13 +77,11 @@ public class IncomeStorage {
     }
 
     // Update an existing income entry based on the key
-    public void updateIncome(String key, double newAmount, String newDate) {
+    public void updateIncome(String key, double newAmount, String newDate, String newCategory) {
         if (incomeMap.containsKey(key)) {
             try {
-                // Parse the new date using the specified formatter
                 String parsedDate = String.valueOf(LocalDateTime.parse(newDate, formatter));
 
-                // Get the income object and update its fields
                 Income income = incomeMap.get(key);
                 income.setAmount(newAmount);
                 income.setDate(parsedDate);
@@ -97,13 +95,14 @@ public class IncomeStorage {
         }
     }
 
-    public void deleteIncome(String key) {
+    public void deleteIncome(String key) throws IOException {
         if (incomeMap.containsKey(key)) {
             incomeMap.remove(key);
             System.out.println("Income with ID " + key + " has been successfully deleted.");
         } else {
             System.out.println("Invalid key. No income found with ID " + key + ".");
         }
+
     }
 
 
@@ -111,7 +110,7 @@ public class IncomeStorage {
     public void setIncome(String key, double amount) {
         if (incomeMap.containsKey(key)) {
             Income income = incomeMap.get(key);
-            income.setAmount(amount); // Assuming the Income class has a setAmount method
+            income.setAmount(amount);
             System.out.println("Income amount updated successfully for ID: " + key);
         } else {
             System.out.println("Invalid key. Unable to update income.");
@@ -146,7 +145,6 @@ public class IncomeStorage {
     }
 
 
-    // Get income by key
     public Income getIncomeByID(String key) {
         return incomeMap.get(key);
     }

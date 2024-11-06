@@ -17,17 +17,13 @@ public class ExpenseStorage {
     private String fileName = "src/main/expenses.json";
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    // Add a new expense with a unique key
     public void addExpense(double amount, String dateString, String category) throws IOException {
         try {
-            // Parse the date using the defined formatter
             LocalDateTime parsedDate = LocalDateTime.parse(dateString, formatter);
             Expense expense = new Expense(amount, parsedDate.format(formatter), category);
 
-            // Read the file to ensure the latest data is loaded
             readExpenseFile();
 
-            // Generate unique ID based on the parsed date
             String uniqueId = generateTimeId(parsedDate);
 
             // Add the new expense to the map
@@ -118,7 +114,7 @@ public class ExpenseStorage {
         FileWriter fw = new FileWriter(fileName, false); // Open the file in overwrite mode
         fw.write(""); // Write an empty string to clear the file
         fw.close();
-        System.out.println("Expenses file cleared.");
+
     }
 
 
@@ -141,7 +137,7 @@ public class ExpenseStorage {
             if (expenseMap.containsKey(key)) {
                 LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
                 Expense expense = expenseMap.get(key);
-                expense.setDate(parsedDate.toString()); // Assuming the Expense class has a setDate method that accepts LocalDateTime
+                expense.setDate(parsedDate.toString());
                 System.out.println("Expense date updated successfully for ID: " + key);
             } else {
                 System.out.println("Invalid key. Unable to update date.");
@@ -151,7 +147,6 @@ public class ExpenseStorage {
         }
     }
 
-    // Show all expenses
     public void showAllExpenses() throws IOException {
         readExpenseFile();
         if (expenseMap.isEmpty()) {
@@ -163,7 +158,6 @@ public class ExpenseStorage {
         }
     }
 
-    // Get expense by key
     public Expense getExpenseByID(String key) {
         return expenseMap.get(key);
     }

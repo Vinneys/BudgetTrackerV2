@@ -1,8 +1,14 @@
 {
-  "122000": {
+  "122200": {
     "category": "SALARY",
     "ecategory": "SALARY",
-    "amount": 1.0,
-    "date": "10-10-2024 12:20"
+    "amount": 2000.0,
+    "date": "10-10-2024 12:22"
+  },
+  "125500": {
+    "category": "OTHER",
+    "ecategory": "OTHER",
+    "amount": 20000.0,
+    "date": "2024-10-10T12:55"
   }
 }
