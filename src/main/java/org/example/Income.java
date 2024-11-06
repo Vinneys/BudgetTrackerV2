@@ -1,48 +1,47 @@
 package org.example;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+public class Income  {
+    private double amount;
+    private LocalDateTime date;
+    private EIncomeCategory category;
 
-public class Income extends Transaction{
-    private String category;
-    private EIncomeCategory ecategory;
+    public Income(double amount, String dateString, EIncomeCategory category) {
+        this.amount = amount;
+        this.category = category;
+        this.date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+    }
 
+    public double getAmount() {
+        return amount;
+    }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-    public Income(double amount, String dateString, String category) {
-        super(amount, dateString);
+    public LocalDateTime getDate() {
+        return date;
+    }
 
-        switch (category){
-            case "SALARY":
-                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.SALARY));
-                break;
-            case "INVESTMENT":
-                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.INVESTMENT));
-                break;
-
-            case "BUSINESS":
-                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.BUSINESS));
-            default:
-                ecategory = EIncomeCategory.valueOf(this.category = String.valueOf(EIncomeCategory.OTHER));
-                break;
-        }
-
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public EIncomeCategory getCategory() {
-        return ecategory;
+        return category;
     }
 
     public void setCategory(EIncomeCategory category) {
-        this.ecategory = category;
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "Income{" +
-                "category='" + category + '\'' +
-                ", amount=" + amount +
-                ", date='" + date.formatted("dd-MM-yyyy HH:mm") + '\'' +
-                '}';
+        return "Income: Amount = " + amount
+                + ", Date = " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
+                + ", Category = " + category;
     }
 }

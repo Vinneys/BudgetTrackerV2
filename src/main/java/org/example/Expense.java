@@ -3,48 +3,37 @@ package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Expense extends Transaction {
-    private String category;
-    private EExpenseCategory ecategory;
+public class Expense  {
+    private double amount;
+    private EExpenseCategory category;
+    private LocalDateTime date;
 
-
-
-    // Constructor to initialize an Expense object
-    public Expense(double amount, String dateString, String category) {
-        super(amount, dateString);
-
-        switch (category) {
-            case "FOOD":
-                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.FOOD));
-                break;
-            case "ENTERTAINMENT":
-                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.ENTERTAINMENT));
-                break;
-            case "TRANSPORT":
-                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.TRANSPORT));
-                break;
-            case "OTHER":
-                ecategory = EExpenseCategory.valueOf(this.category = String.valueOf(EExpenseCategory.OTHER));
-                break;
-            // Add more cases as necessary for other expense categories
-        }
+    public Expense( double amount, String dateString) {
+        this.amount = amount;
+        this.date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
     public EExpenseCategory getCategory() {
-        return ecategory;
+        return category;
     }
 
     public void setCategory(EExpenseCategory category) {
-        this.ecategory = category;
+        this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "Expense{" +
-                "category='" + category + '\'' +
-                ", ecategory=" + ecategory +
-                ", amount=" + amount +
-                ", date='" + date + '\'' +
-                '}';
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }
