@@ -15,7 +15,15 @@ public class budgetTracker {
 
     public static void main(String[] args) throws IOException {
         boolean done = false;
+
+        System.out.println("What is your first name?");
+        String firstName = scan.nextLine();
+        System.out.println("What is your last name?");
+        String lastName = scan.nextLine();
+        User user = new User(firstName, lastName);
+        System.out.println("Welcome " + user + " to your own Budget Tracker!");
         do {
+
             System.out.println("1. Add an expense");
             System.out.println("2. Add an income");
             System.out.println("3. Show incomes");
@@ -41,6 +49,7 @@ public class budgetTracker {
             }
         } while (!done);
     }
+
 
     static void showIncomes() throws IOException {
         System.out.println("Do you want to see all incomes? (y/n)");
